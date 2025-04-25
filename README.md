@@ -15,7 +15,9 @@ SSH (Secure Shell) is a cryptographic network protocol used to securely access r
 - Together, they form a key pair used for authentication without typing a password.
 
 ```
-ssh bootj@login.nemo.thecrick.org
+ssh bootj@login.nemo.thecrick.org # Recommended!
+ssh bootj@login006.nemo.thecrick.org
+ssh bootj@login007.nemo.thecrick.org
 ```
 
 ### 🔌 Create SSH Session in MobaXterm GUI
@@ -27,7 +29,7 @@ ssh bootj@login.nemo.thecrick.org
   - Remote host: hpc.address.edu
   - Username: your HPC username
 - Under Advanced SSH Settings:
-  - Check “Use private key” and select your private key (id_rsa)
+  - Check “Use private key” and select your private key (id_rsa) - navigate to the folder:
   - `C:\Users\<YourUsername>\Documents\MobaXterm\home\.ssh` OR `~/.ssh`
 - Click OK to save and connect.
 
@@ -67,6 +69,10 @@ Easy way to send off multiple processes/tasks/jobs at once (e.g. multiple sample
 #SBATCH --array=0-9              # 10 tasks, IDs 0 to 9
 ```
 
+### GPU jobs
+
+https://wiki.thecrick.org/display/HPC/GPU+Jobs
+
 ### 📤 Submit a Job
 
 SBATCH
@@ -98,10 +104,11 @@ squeue -u bootj --long --iterate
 # Cancel a job (you can use a comma-separated list of job IDs):
 scancel your_job-id
 
-# Job status (CPU usage, task information, node information, resident set size (RSS), and virtual memory (VM))
+# Running job status (CPU usage, task information, node information, resident set size (RSS), and virtual memory (VM))
 sstat --jobs=your_job-id
 
 # Analysing past jobs
+# The sacct command displays information on jobs, job steps, status, and exitcodes by default.
 sacct --jobs=your_job-id
 
 # Suspend a job:
@@ -117,7 +124,8 @@ scontrol resume job_id
 - This means its pre-intalled - you can load it and then use it!
 - You can search for software using `ml spider PROGRAM_NAME`
 - You can load modules using `ml PROGRAM_NAME`
-- 
+
+- The alternative here is conda environments, and or, singularity containers.
 
 ## 🔧 Cheatsheet
 
@@ -143,7 +151,7 @@ scontrol resume job_id
 - `grep 'pattern' file` : Search for pattern
 - `find . -name "*.txt"` : Find files by name
 
-### 🛠️ Permissions
+### 🛠️ Permissions - easier talk to HPC regarding folder/file permissions
 - `chmod +x <file>` : Make file executable
 - `chown user:group <file>` : Change ownership
 
@@ -154,16 +162,8 @@ scontrol resume job_id
 - `gunzip file.gz` : Decompress
 
 ### 🧪 Process Management
-- `ps aux` : List running processes
 - `top` or `htop` : Real-time monitoring
-- `kill <PID>` : Terminate process
 
 ### 🔐 SSH Commands
 - `ssh user@host` : Connect to remote server
 - `scp file user@host:/path/` : Secure file copy
-
-### 🗂 SLURM Basics
-- `sbatch job.slurm` : Submit job
-- `squeue` : View job queue
-- `scancel <job_id>` : Cancel job
-- `sinfo` : Show cluster info
